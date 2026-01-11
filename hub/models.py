@@ -43,7 +43,9 @@ class Note(models.Model):
 # ================= USER PROFILE =================
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    mobile = models.CharField(max_length=15, unique=True)
+
+    # 🔁 MOBILE OPTIONAL (future use)
+    mobile = models.CharField(max_length=15, blank=True, null=True)
 
     college_name = models.CharField(max_length=200, blank=True)
     branch = models.CharField(max_length=100, blank=True)
@@ -67,17 +69,20 @@ class UserProfile(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.mobile
+        return self.user.email
 
 
-# ================= OTP =================
+# ================= OTP (EMAIL BASED) =================
 class OTP(models.Model):
-    mobile = models.CharField(max_length=15)
+    email = models.EmailField()
     otp = models.CharField(max_length=6)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def is_expired(self):
         return timezone.now() > self.created_at + timedelta(minutes=5)
+
+    def __str__(self):
+        return f"{self.email} - {self.otp}"
 
 
 # ================= PURCHASE =================

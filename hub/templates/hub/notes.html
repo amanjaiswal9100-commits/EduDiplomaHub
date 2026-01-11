@@ -66,7 +66,7 @@ body{
   transform:translateY(30px);
 }
 
-/* gradient border */
+/* gradient border (SAFE) */
 .note-card::before{
   content:"";
   position:absolute;
@@ -80,6 +80,8 @@ body{
   -webkit-mask-composite:xor;
   mask-composite:exclude;
   opacity:.35;
+
+  pointer-events:none;   /* 🔥 CLICK BLOCK FIX */
 }
 
 .note-card:hover{
@@ -105,6 +107,8 @@ body{
 .note-footer{
   margin-top:auto;
   padding-top:18px;
+  position:relative;
+  z-index:5;
 }
 
 .price{
@@ -125,6 +129,9 @@ body{
   text-align:center;
   text-decoration:none;
   transition:.3s ease;
+
+  position:relative;
+  z-index:10;          /* 🔥 BUTTON TOP LAYER */
 }
 
 .btn-view{
@@ -191,19 +198,19 @@ body{
           <a href="{% url 'view_note' n.id %}" class="btn btn-view">
             View Note
           </a>
-
         {% else %}
           {% if user.is_authenticated %}
-            <button class="btn btn-buy" onclick="payForNote({{ n.id }})">
+            <button type="button" class="btn btn-buy"
+              onclick="payForNote({{ n.id }})">
               Buy ₹{{ n.price }}
             </button>
 
-            <button class="btn btn-coin"
+            <button type="button" class="btn btn-coin"
               onclick="unlockWithCoins({{ n.id }})">
               Unlock with {{ n.coin_price }} Coins
             </button>
           {% else %}
-            <button class="btn btn-buy"
+            <button type="button" class="btn btn-buy"
               onclick="alert('Please login to unlock this note.')">
               Login to Buy
             </button>
@@ -225,16 +232,18 @@ body{
 <script>
 function payForNote(noteId){
   fetch(`/pay/${noteId}/`)
-    .then(res=>res.json())
-    .then(data=>{
-      const options={
-        key:data.key,
-        amount:data.amount,
-        currency:"INR",
-        name:"EduDiplomaHub",
-        description:data.note_title,
-        order_id:data.order_id,
-        handler:()=>location.reload()
+    .then(res => res.json())
+    .then(data => {
+      const options = {
+        key: data.key,
+        amount: data.amount,
+        currency: "INR",
+        name: "EduDiplomaHub",
+        description: data.note_title,
+        order_id: data.order_id,
+        handler: function () {
+          location.reload();
+        }
       };
       new Razorpay(options).open();
     });
@@ -242,10 +251,13 @@ function payForNote(noteId){
 
 function unlockWithCoins(noteId){
   fetch(`/unlock-coin/${noteId}/`)
-    .then(res=>res.json())
-    .then(data=>{
-      if(data.status==="success") location.reload();
-      else alert("Unable to unlock");
+    .then(res => res.json())
+    .then(data => {
+      if(data.status === "success"){
+        location.reload();
+      }else{
+        alert("Unable to unlock");
+      }
     });
 }
 

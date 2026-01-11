@@ -8,7 +8,7 @@
   <style>
     body{
       margin:0;
-      font-family:"Inter", Arial, sans-serif;
+      font-family:Inter, Arial, sans-serif;
       background:linear-gradient(135deg,#e0ecff,#f5f7fb);
       min-height:100vh;
       display:flex;
@@ -18,7 +18,7 @@
 
     .card{
       width:100%;
-      max-width:440px;
+      max-width:460px;
       background:#ffffff;
       padding:32px 28px;
       border-radius:18px;
@@ -117,7 +117,7 @@
 <div class="card">
 
   <h2>Verify OTP</h2>
-  <p class="sub">Enter the OTP sent to your mobile number</p>
+  <p class="sub">Enter the OTP sent to your email address</p>
 
   {% if error %}
     <div class="error">{{ error }}</div>
@@ -132,11 +132,11 @@
   <form method="post">
     {% csrf_token %}
 
-    <!-- MOBILE -->
+    <!-- EMAIL (READONLY) -->
     <input
-      type="text"
-      name="mobile"
-      value="{{ mobile }}"
+      type="email"
+      name="email"
+      value="{{ email }}"
       readonly
     >
 
@@ -145,62 +145,51 @@
       type="text"
       name="otp"
       placeholder="Enter 6-digit OTP"
+      maxlength="6"
       required
     >
 
-    <!-- 🔥 NEW USER ONLY -->
-    <!-- 🔥 NEW USER ONLY -->
-{% if not user_exists %}
+    <!-- 🔥 ONLY FOR NEW USER -->
+    {% if not user_exists %}
 
-  <input
-    type="text"
-    name="name"
-    placeholder="Your Full Name"
-    required
-  >
+      <input
+        type="text"
+        name="name"
+        placeholder="Your Full Name"
+        required
+      >
 
-  <input
-    type="email"
-    name="email"
-    placeholder="Email Address"
-    required
-  >
+      <input
+        type="text"
+        name="college"
+        placeholder="College Name"
+        required
+      >
 
-  <input
-    type="text"
-    name="college"
-    placeholder="College Name"
-    required
-  >
+      <input
+        type="text"
+        name="branch"
+        placeholder="Branch (IT, CSE, ME, EE etc.)"
+        required
+      >
 
-  <input
-    type="text"
-    name="branch"
-    placeholder="Branch (IT, CSE, ME, EE etc.)"
-    required
-  >
+      <input
+        type="password"
+        name="password"
+        placeholder="Create Password"
+        minlength="6"
+        required
+      >
 
-  <!-- 🔐 PASSWORD -->
-  <input
-    type="password"
-    name="password"
-    placeholder="Create Password"
-    minlength="6"
-    required
-  >
+      <input
+        type="password"
+        name="confirm_password"
+        placeholder="Confirm Password"
+        minlength="6"
+        required
+      >
 
-  <input
-    type="password"
-    name="confirm_password"
-    placeholder="Confirm Password"
-    minlength="6"
-    required
-  >
-
-{% endif %}
-
-
-    <input type="hidden" name="ref_code" value="{{ ref_code }}">
+    {% endif %}
 
     <button type="submit">
       Verify & Continue

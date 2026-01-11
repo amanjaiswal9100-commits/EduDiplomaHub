@@ -1,6 +1,6 @@
 """
 Django settings for core project.
-Deployment-ready configuration (Local + Railway/Render safe)
+Deployment-ready configuration (Local + Render safe)
 """
 
 import os
@@ -77,7 +77,7 @@ TEMPLATES = [
 ]
 
 # --------------------------------------------------
-# DATABASE (SQLite local, PostgreSQL future-ready)
+# DATABASE
 # --------------------------------------------------
 DATABASES = {
     'default': {
@@ -124,15 +124,24 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # --------------------------------------------------
-# RAZORPAY (ENV SAFE)
+# RAZORPAY
 # --------------------------------------------------
 RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID")
 RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
 
 # --------------------------------------------------
-# FAST2SMS (ENV SAFE)
+# EMAIL CONFIG (GMAIL SMTP - OTP SYSTEM)
 # --------------------------------------------------
-FAST2SMS_API_KEY = os.getenv("FAST2SMS_API_KEY")
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = 'edudiplomahub@gmail.com'
+EMAIL_HOST_PASSWORD = "kuhz saks azua vgzp"  # app password
+
+DEFAULT_FROM_EMAIL = 'EduDiplomaHub <edudiplomahub@gmail.com>'
 
 # --------------------------------------------------
 # SECURITY HEADERS
