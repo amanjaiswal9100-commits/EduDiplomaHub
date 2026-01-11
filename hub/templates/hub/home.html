@@ -1,0 +1,1649 @@
+
+{% load static %}
+
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>EduDiplomaHub | Structured Diploma Notes</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+/* ===== NAVBAR ===== */
+.pro-navbar{
+  position:sticky;
+  top:0;
+  z-index:3000;
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid #e5e7eb;
+  transition:.35s ease;
+}
+a{
+  text-decoration:none !important;
+}
+
+.pro-navbar.scrolled{
+  box-shadow:0 18px 45px rgba(0,0,0,.18);
+}
+
+.pro-nav-inner{
+  max-width:1200px;
+  margin:auto;
+  padding:14px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+/* LOGO */
+.pro-brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.pro-logo{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#0d6efd,#2563eb);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-weight:900;
+  transition:.4s;
+}
+.pro-logo:hover{
+  transform:rotate(-6deg) scale(1.08);
+  box-shadow:0 0 28px rgba(13,110,253,.55);
+}
+.pro-brand-text{
+  font-size:1.2rem;
+  font-weight:800;
+  color:#0d6efd;
+}
+
+/* LINKS */
+.pro-links{
+  list-style:none;
+  display:flex;
+  gap:32px;
+  margin:0;
+  padding:0;
+}
+.pro-links a{
+  color:#374151;
+  font-weight:600;
+  position:relative;
+  padding-bottom:6px;
+}
+.pro-links a::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:0;
+  width:0;
+  height:3px;
+  border-radius:6px;
+  background:linear-gradient(90deg,#0d6efd,#60a5fa);
+  transition:.35s;
+  transform:translateX(-50%);
+}
+.pro-links a:hover::after,
+.pro-links a.active::after{
+  width:100%;
+}
+.pro-links a:hover,
+.pro-links a.active{
+  color:#0d6efd;
+}
+
+/* ACTIONS */
+.pro-actions{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+/* LOGIN / SIGNUP */
+.pro-login{
+  font-weight:700;
+  color:#0d6efd;
+}
+.pro-signup{
+  padding:9px 22px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#0d6efd,#2563eb);
+  color:#fff;
+  font-weight:800;
+  transition:.35s;
+}
+.pro-signup:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 32px rgba(13,110,253,.45);
+}
+
+/* USER */
+.pro-user{
+  position:relative;
+}
+.pro-user-btn{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+  font-weight:700;
+  color:#0d6efd;
+}
+.pro-user-btn .arrow{
+  width:6px;
+  height:6px;
+  border-right:2px solid #0d6efd;
+  border-bottom:2px solid #0d6efd;
+  transform:rotate(45deg);
+  margin-top:-2px;
+}
+
+.pro-user-menu{
+  position:absolute;
+  right:0;
+  top:140%;
+  background:#fff;
+  border-radius:16px;
+  padding:10px;
+  min-width:200px;
+  box-shadow:0 25px 60px rgba(0,0,0,.2);
+  opacity:0;
+  transform:translateY(10px);
+  pointer-events:none;
+  transition:.35s;
+}
+.pro-user:hover .pro-user-menu{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+.pro-user-menu a,
+.pro-user-menu button{
+  display:block;
+  padding:12px;
+  border-radius:10px;
+  font-size:.9rem;
+  color:#374151;
+  background:none;
+  border:none;
+  width:100%;
+  text-align:left;
+}
+.pro-user-menu button{
+  color:#dc2626;
+}
+
+/* MOBILE */
+.pro-toggle{
+  display:none;
+  flex-direction:column;
+  gap:5px;
+}
+.pro-toggle span{
+  width:26px;
+  height:2px;
+  background:#374151;
+}
+
+@media(max-width:900px){
+  .pro-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    background:#fff;
+    flex-direction:column;
+    padding:24px;
+    display:none;
+  }
+  .pro-links.open{display:flex}
+  .pro-actions{display:none}
+  .pro-toggle{display:flex}
+}
+/* ================= HERO ELITE ================= */
+.hero-elite{
+  padding:100px 20px 90px;
+  background:linear-gradient(180deg,#eef4ff,#f5f7fb);
+  overflow:hidden;
+}
+
+.hero-wrap{
+  max-width:1200px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:50px;
+  align-items:center;
+}
+
+/* LEFT */
+.hero-left{
+  opacity:0;
+  transform:translateY(30px);
+}
+
+.hero-title{
+  font-size:2.7rem;
+  font-weight:800;
+  line-height:1.2;
+  color:#0d6efd;
+  margin-bottom:18px;
+}
+
+.hero-title span{
+  color:#1f2937;
+}
+
+.hero-typing{
+  font-size:1.15rem;
+  font-weight:600;
+  color:#4b5563;
+  min-height:30px;
+  margin-bottom:22px;
+}
+
+.hero-desc{
+  font-size:1.05rem;
+  color:#4b5563;
+  max-width:520px;
+  margin-bottom:34px;
+}
+
+/* BUTTONS */
+.hero-actions{
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+.hero-btn{
+  padding:14px 28px;
+  border-radius:12px;
+  font-weight:700;
+  text-decoration:none;
+  transition:.35s ease;
+  position:relative;
+}
+
+.hero-btn.primary{
+  background:#0d6efd;
+  color:#fff;
+  box-shadow:0 12px 30px rgba(13,110,253,.35);
+}
+
+.hero-btn.primary:hover{
+  transform:translateY(-3px);
+  background:#084298;
+}
+
+.hero-btn.outline{
+  border:2px solid #0d6efd;
+  color:#0d6efd;
+}
+
+.hero-btn.outline:hover{
+  background:#0d6efd;
+  color:#fff;
+}
+
+/* RIGHT */
+.hero-right{
+  display:flex;
+  justify-content:center;
+  opacity:0;
+  transform:translateY(40px);
+}
+
+.hero-preview-card{
+  width:100%;
+  max-width:360px;
+  background:#fff;
+  padding:26px;
+  border-radius:18px;
+  box-shadow:0 25px 60px rgba(0,0,0,.15);
+  animation:floatCard 6s ease-in-out infinite;
+}
+
+@keyframes floatCard{
+  0%,100%{ transform:translateY(0); }
+  50%{ transform:translateY(-12px); }
+}
+
+.line{
+  height:12px;
+  background:#e0e7ff;
+  border-radius:8px;
+  margin-bottom:16px;
+}
+.w100{width:100%}
+.w90{width:90%}
+.w70{width:70%}
+.w60{width:60%}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero-wrap{
+    grid-template-columns:1fr;
+    text-align:center;
+  }
+  .hero-desc{margin:auto}
+  .hero-actions{justify-content:center}
+}
+/* ================= TRUST SECTION ================= */
+.trust-section{
+  padding:90px 20px;
+  background:#ffffff;
+}
+
+.trust-container{
+  max-width:1200px;
+  margin:auto;
+}
+
+/* Header */
+.trust-header{
+  text-align:center;
+  margin-bottom:60px;
+}
+
+.trust-badge{
+  display:inline-block;
+  background:#eaf2ff;
+  color:#0d6efd;
+  padding:6px 14px;
+  border-radius:999px;
+  font-size:.8rem;
+  font-weight:700;
+  margin-bottom:14px;
+}
+
+.trust-header h2{
+  font-size:2.1rem;
+  font-weight:800;
+  color:#0d6efd;
+  margin-bottom:14px;
+}
+
+.trust-header p{
+  max-width:640px;
+  margin:auto;
+  font-size:.95rem;
+  color:#4b5563;
+  line-height:1.7;
+}
+
+/* Grid */
+.trust-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:28px;
+}
+
+/* Card */
+.trust-card{
+  background:#f9fbff;
+  padding:32px 26px;
+  border-radius:18px;
+  text-align:center;
+  box-shadow:0 12px 30px rgba(0,0,0,0.08);
+  transition:all .4s ease;
+  opacity:0;
+  transform:translateY(30px);
+}
+
+.trust-card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 20px 48px rgba(13,110,253,0.25);
+}
+
+/* Icon */
+.trust-icon{
+  width:64px;
+  height:64px;
+  margin:0 auto 18px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#0d6efd,#084298);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#ffffff;
+  font-size:1.5rem;
+}
+
+/* Text */
+.trust-card h3{
+  font-size:1.1rem;
+  font-weight:700;
+  margin-bottom:10px;
+  color:#1f2937;
+}
+
+.trust-card p{
+  font-size:.9rem;
+  color:#4b5563;
+  line-height:1.6;
+}
+
+/* Responsive */
+@media(max-width:768px){
+  .trust-header h2{
+    font-size:1.7rem;
+  }
+}
+/* ================= SUBJECTS SECTION ================= */
+.subjects-section{
+  padding:90px 20px;
+  background:#f5f7fb;
+}
+
+.subjects-container{
+  max-width:1200px;
+  margin:auto;
+}
+
+/* Header */
+.subjects-header{
+  text-align:center;
+  margin-bottom:60px;
+}
+
+.subjects-badge{
+  display:inline-block;
+  background:#ecfeff;
+  color:#0369a1;
+  padding:6px 14px;
+  border-radius:999px;
+  font-size:.8rem;
+  font-weight:700;
+  margin-bottom:14px;
+}
+
+.subjects-header h2{
+  font-size:2.1rem;
+  font-weight:800;
+  color:#0d6efd;
+  margin-bottom:12px;
+}
+
+.subjects-header p{
+  max-width:620px;
+  margin:auto;
+  font-size:.95rem;
+  color:#4b5563;
+  line-height:1.7;
+}
+
+/* List */
+.subjects-list{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+/* Row */
+.subject-row{
+  background:#ffffff;
+  padding:26px 30px;
+  border-radius:18px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:20px;
+  align-items:center;
+  box-shadow:0 12px 30px rgba(0,0,0,0.08);
+  transition:all .4s ease;
+  opacity:0;
+  transform:translateY(24px);
+}
+
+.subject-row:hover{
+  transform:translateY(-6px);
+  box-shadow:0 18px 44px rgba(13,110,253,0.22);
+}
+
+/* Left */
+.subject-left h3{
+  font-size:1.15rem;
+  font-weight:700;
+  color:#1f2937;
+  margin-bottom:6px;
+}
+
+.subject-left p{
+  font-size:.92rem;
+  color:#4b5563;
+  max-width:520px;
+  line-height:1.6;
+}
+
+.subject-code{
+  display:inline-block;
+  font-size:.75rem;
+  font-weight:700;
+  color:#0d6efd;
+  background:#eaf2ff;
+  padding:4px 10px;
+  border-radius:6px;
+  margin-bottom:6px;
+}
+
+/* Right */
+.subject-right span{
+  font-size:.85rem;
+  font-weight:700;
+  color:#047857;
+  background:#ecfdf5;
+  padding:8px 14px;
+  border-radius:999px;
+}
+
+/* Responsive */
+@media(max-width:768px){
+  .subject-row{
+    grid-template-columns:1fr;
+    text-align:left;
+  }
+
+  .subject-right{
+    margin-top:10px;
+  }
+
+  .subjects-header h2{
+    font-size:1.7rem;
+  }
+}
+/* ===== NEXT LEVEL HOVER EFFECTS ===== */
+
+.subject-row{
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+}
+
+/* Left accent line */
+.subject-row::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  width:5px;
+  height:100%;
+  background:linear-gradient(180deg,#0d6efd,#22d3ee);
+  transform:scaleY(0);
+  transform-origin:top;
+  transition:.45s ease;
+}
+
+.subject-row:hover::before{
+  transform:scaleY(1);
+}
+
+/* Subject code animation */
+.subject-row:hover .subject-code{
+  background:#0d6efd;
+  color:#fff;
+  transform:translateY(-2px) rotate(-2deg);
+  box-shadow:0 6px 16px rgba(13,110,253,.45);
+}
+
+/* Right badge pulse */
+.subject-row:hover .subject-right span{
+  background:#047857;
+  color:#ffffff;
+  box-shadow:0 0 0 8px rgba(4,120,87,.12);
+}
+
+/* Title emphasis */
+.subject-row:hover h3{
+  color:#0d6efd;
+  letter-spacing:.3px;
+}
+
+/* Subtle background shift */
+.subject-row:hover{
+  background:linear-gradient(180deg,#ffffff,#f8fbff);
+}
+
+/* Smooth transitions */
+.subject-code,
+.subject-right span,
+.subject-row h3{
+  transition:all .35s ease;
+}
+/* ================= NOTES SECTION ================= */
+.notes-section{
+  padding:90px 20px;
+  background:#ffffff;
+}
+
+.notes-container{
+  max-width:1200px;
+  margin:auto;
+}
+
+/* Header */
+.notes-header{
+  text-align:center;
+  margin-bottom:60px;
+}
+
+.notes-badge{
+  display:inline-block;
+  background:#eef2ff;
+  color:#4338ca;
+  padding:6px 14px;
+  border-radius:999px;
+  font-size:.8rem;
+  font-weight:700;
+  margin-bottom:14px;
+}
+
+.notes-header h2{
+  font-size:2.1rem;
+  font-weight:800;
+  color:#0d6efd;
+  margin-bottom:12px;
+}
+
+.notes-header p{
+  max-width:620px;
+  margin:auto;
+  font-size:.95rem;
+  color:#4b5563;
+  line-height:1.7;
+}
+
+/* Grid */
+.notes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:28px;
+}
+
+/* Tile */
+.note-tile{
+  position:relative;
+  background:#f9fbff;
+  padding:26px 24px;
+  border-radius:18px;
+  box-shadow:0 12px 28px rgba(0,0,0,0.08);
+  transition:all .45s ease;
+  cursor:pointer;
+  overflow:hidden;
+}
+
+/* Accent glow */
+.note-tile::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,transparent,rgba(13,110,253,.12),transparent);
+  opacity:0;
+  transition:.45s;
+}
+
+.note-tile:hover::before{
+  opacity:1;
+}
+
+/* Hover lift */
+.note-tile:hover{
+  transform:translateY(-8px);
+  box-shadow:0 20px 46px rgba(13,110,253,.25);
+}
+
+/* Top tags */
+.note-top{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+
+.note-tag{
+  font-size:.75rem;
+  font-weight:700;
+  color:#0d6efd;
+  background:#eaf2ff;
+  padding:4px 10px;
+  border-radius:6px;
+}
+
+.note-type{
+  font-size:.75rem;
+  font-weight:700;
+  color:#047857;
+  background:#ecfdf5;
+  padding:4px 10px;
+  border-radius:6px;
+}
+
+/* Title */
+.note-tile h3{
+  font-size:1.05rem;
+  font-weight:700;
+  color:#1f2937;
+  margin-bottom:8px;
+  transition:.3s;
+}
+
+.note-tile:hover h3{
+  color:#0d6efd;
+  letter-spacing:.3px;
+}
+
+/* Text */
+.note-tile p{
+  font-size:.9rem;
+  color:#4b5563;
+  line-height:1.6;
+  margin-bottom:18px;
+}
+
+/* Footer */
+.note-footer{
+  display:flex;
+  justify-content:space-between;
+  font-size:.8rem;
+  font-weight:700;
+  color:#6b7280;
+}
+
+/* Footer hover */
+.note-tile:hover .note-footer span:first-child{
+  color:#047857;
+}
+/* ================= BENEFITS NEXT LEVEL ================= */
+.benefits-next{
+  padding:100px 20px;
+  background:linear-gradient(180deg,#eef4ff,#ffffff);
+}
+
+.benefits-wrap{
+  max-width:1200px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:1fr 1.3fr;
+  gap:70px;
+  align-items:flex-start;
+}
+
+/* Left */
+.benefits-left h2{
+  font-size:2.2rem;
+  font-weight:800;
+  color:#0d6efd;
+  margin-bottom:14px;
+}
+
+.benefits-left p{
+  font-size:1rem;
+  color:#4b5563;
+  line-height:1.7;
+  max-width:420px;
+}
+
+/* Right flow */
+.benefits-right{
+  position:relative;
+  padding-left:40px;
+}
+
+.benefit-line{
+  position:absolute;
+  left:14px;
+  top:0;
+  bottom:0;
+  width:2px;
+  background:#c7d2fe;
+}
+
+.benefit-item{
+  display:flex;
+  gap:22px;
+  margin-bottom:42px;
+  opacity:0;
+  transform:translateY(30px);
+  transition:all .6s ease;
+}
+
+.benefit-dot{
+  width:14px;
+  height:14px;
+  background:#0d6efd;
+  border-radius:50%;
+  margin-top:6px;
+  box-shadow:0 0 0 6px rgba(13,110,253,.15);
+  transition:.3s;
+}
+
+.benefit-box{
+  background:#ffffff;
+  padding:18px 20px;
+  border-radius:14px;
+  box-shadow:0 10px 26px rgba(0,0,0,.08);
+  transition:all .35s ease;
+}
+
+.benefit-box h4{
+  font-size:1.05rem;
+  font-weight:700;
+  margin-bottom:6px;
+  color:#1f2937;
+}
+
+.benefit-box p{
+  font-size:.9rem;
+  color:#4b5563;
+  line-height:1.6;
+}
+
+/* Hover magic */
+.benefit-item:hover .benefit-box{
+  transform:translateX(6px);
+  box-shadow:0 18px 40px rgba(13,110,253,.25);
+}
+
+.benefit-item:hover .benefit-dot{
+  transform:scale(1.2);
+  box-shadow:0 0 0 10px rgba(13,110,253,.25);
+}
+
+/* Responsive */
+@media(max-width:900px){
+  .benefits-wrap{
+    grid-template-columns:1fr;
+    gap:50px;
+  }
+  .benefits-left{
+    text-align:center;
+  }
+  .benefits-left p{
+    margin:auto;
+  }
+}
+/* ================= FOOTER ELITE ================= */
+.footer-elite{
+  background:linear-gradient(180deg,#0b1220,#020617);
+  color:#cbd5e1;
+  padding:90px 20px 0;
+}
+
+.footer-wrap{
+  max-width:1200px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:1.6fr 1fr 1fr;
+  gap:60px;
+}
+
+/* Brand */
+.footer-brand{
+  opacity:0;
+  transform:translateY(30px);
+  transition:.7s ease;
+}
+
+.footer-logo{
+  width:48px;
+  height:48px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#0d6efd,#084298);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  color:#fff;
+  margin-bottom:14px;
+  box-shadow:0 10px 26px rgba(13,110,253,.35);
+}
+
+.footer-brand h3{
+  font-size:1.3rem;
+  font-weight:800;
+  color:#fff;
+  margin-bottom:10px;
+}
+
+.footer-brand p{
+  font-size:.9rem;
+  color:#94a3b8;
+  line-height:1.7;
+  max-width:380px;
+}
+
+/* Columns */
+.footer-col{
+  opacity:0;
+  transform:translateY(30px);
+  transition:.7s ease;
+}
+
+.footer-col h4{
+  font-size:1rem;
+  font-weight:700;
+  color:#fff;
+  margin-bottom:14px;
+  position:relative;
+}
+
+.footer-col h4::after{
+  content:"";
+  width:28px;
+  height:2px;
+  background:#0d6efd;
+  position:absolute;
+  left:0;
+  bottom:-6px;
+}
+
+.footer-col ul{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+
+.footer-col li{
+  margin-bottom:10px;
+}
+
+.footer-col a{
+  color:#94a3b8;
+  font-size:.9rem;
+  transition:.3s ease;
+  position:relative;
+}
+
+.footer-col a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-3px;
+  width:0;
+  height:1px;
+  background:#0d6efd;
+  transition:.3s;
+}
+
+.footer-col a:hover{
+  color:#fff;
+}
+
+.footer-col a:hover::after{
+  width:100%;
+}
+
+/* Bottom */
+.footer-bottom{
+  margin-top:70px;
+  border-top:1px solid #1e293b;
+  text-align:center;
+  padding:18px 10px;
+  opacity:0;
+  transition:.7s ease;
+}
+
+.footer-bottom p{
+  font-size:.85rem;
+  color:#94a3b8;
+}
+
+/* Responsive */
+@media(max-width:900px){
+  .footer-wrap{
+    grid-template-columns:1fr;
+    gap:40px;
+    text-align:center;
+  }
+
+  .footer-col h4::after{
+    left:50%;
+    transform:translateX(-50%);
+  }
+
+  .footer-brand p{
+    margin:auto;
+  }
+}
+
+
+
+</style>
+</head>
+
+<body>
+<nav class="pro-navbar">
+  <div class="pro-nav-inner">
+
+    <!-- LOGO -->
+    <a href="/" class="pro-brand">
+      <div class="pro-logo">
+        <span>ED</span>
+      </div>
+      <span class="pro-brand-text">EduDiplomaHub</span>
+    </a>
+
+    <!-- LINKS -->
+    <ul class="pro-links" id="proLinks">
+      <li><a href="/" class="active">Home</a></li>
+      <li><a href="{% url 'subject_list' %}">Subjects</a></li>
+      <li><a href="{% url 'all_notes' %}">Notes</a></li>
+      <li><a href="/help">Help</a></li>
+    </ul>
+
+    <!-- ACTIONS -->
+    <div class="pro-actions">
+
+      {% if request.user.is_authenticated %}
+      <div class="pro-user">
+        <div class="pro-user-btn">
+          <span class="avatar">👤</span>
+          <span class="name">
+            {{ request.user.first_name|default:request.user.username }}
+          </span>
+          <i class="arrow"></i>
+        </div>
+
+        <div class="pro-user-menu">
+          <a href="{% url 'profile' %}">My Profile</a>
+          <a href="{% url 'my_notes' %}">My Notes</a>
+
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+          </form>
+        </div>
+      </div>
+      {% else %}
+        <a href="{% url 'login' %}" class="pro-login">Login</a>
+        <a href="{% url 'signup' %}" class="pro-signup">Sign Up</a>
+      {% endif %}
+
+    </div>
+
+    <!-- MOBILE -->
+    <div class="pro-toggle" id="proToggle">
+      <span></span><span></span><span></span>
+    </div>
+
+  </div>
+</nav>
+<!-- ================= HERO SECTION ================= -->
+<section class="hero-elite">
+  <div class="hero-wrap">
+
+    <!-- LEFT CONTENT -->
+    <div class="hero-left">
+      <h1 class="hero-title">
+       Structured Notes for <br>
+<span>IT & Computer Science Diploma Students</span>
+
+      </h1>
+
+      <div class="hero-typing">
+        <span id="heroTyped"></span>
+      </div>
+
+      <p class="hero-desc">
+        Exam-oriented, unit-wise notes designed to improve
+        clarity, confidence and consistent preparation.
+      </p>
+
+      <div class="hero-actions">
+        <a href="{% url 'subject_list' %}" class="hero-btn primary">
+          Explore Subjects
+        </a>
+        <a href="{% url 'all_notes' %}" class="hero-btn outline">
+          View Notes
+        </a>
+      </div>
+    </div>
+
+    <!-- RIGHT PREVIEW -->
+    <div class="hero-right">
+      <div class="hero-preview-card">
+        <div class="line w90"></div>
+        <div class="line w70"></div>
+        <div class="line w100"></div>
+        <div class="line w60"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- ================= TRUST SECTION ================= -->
+<section class="trust-section">
+  <div class="trust-container">
+
+    <!-- Heading -->
+    <div class="trust-header">
+      <span class="trust-badge">Why Students Trust Us</span>
+      <h2>Built for IT & Computer Science Diploma Students</h2>
+      <p>
+        EduDiplomaHub focuses on exam-oriented preparation,
+        structured content, and secure access designed
+        specially for diploma & polytechnic students.
+      </p>
+    </div>
+
+    <!-- Trust Cards -->
+    <div class="trust-grid">
+
+      <div class="trust-card">
+        <div class="trust-icon">
+          <i class="bi bi-people-fill"></i>
+        </div>
+        <h3>500+ Active Students</h3>
+        <p>
+          Students from IT & CS branches regularly
+          use our notes for semester and board exams.
+        </p>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-icon">
+          <i class="bi bi-journal-text"></i>
+        </div>
+        <h3>Exam-Oriented Notes</h3>
+        <p>
+          Notes strictly follow syllabus
+          with 5-mark and 10-mark focused answers.
+        </p>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-icon">
+          <i class="bi bi-shield-lock-fill"></i>
+        </div>
+        <h3>Secure PDF Viewing</h3>
+        <p>
+          Notes are protected with view-only access,
+          preventing downloads and misuse.
+        </p>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-icon">
+          <i class="bi bi-check-circle-fill"></i>
+        </div>
+        <h3>Student Tested Content</h3>
+        <p>
+          Content is improved continuously
+          based on real student feedback.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+<!-- ================= SUBJECTS SECTION ================= -->
+<section class="subjects-section">
+  <div class="subjects-container">
+
+    <!-- Header -->
+    <div class="subjects-header">
+      <span class="subjects-badge">What You’ll Study</span>
+      <h2>Core IT & Computer Science Subjects</h2>
+      <p>
+        Carefully selected diploma-level subjects
+        structured for semester exams and board preparation.
+      </p>
+    </div>
+
+    <!-- Subject Rows -->
+    <div class="subjects-list">
+
+      <div class="subject-row">
+        <div class="subject-left">
+          <span class="subject-code">CS-301</span>
+          <h3>Operating System</h3>
+          <p>
+            Process management, CPU scheduling,
+            memory management and file systems
+            explained in exam-friendly format.
+          </p>
+        </div>
+        <div class="subject-right">
+          <span>Units • Diagrams • 5-Mark Answers</span>
+        </div>
+      </div>
+
+      <div class="subject-row">
+        <div class="subject-left">
+          <span class="subject-code">CS-302</span>
+          <h3>Database Management System</h3>
+          <p>
+            SQL queries, normalization, transactions
+            and database design with solved examples.
+          </p>
+        </div>
+        <div class="subject-right">
+          <span>Tables • Queries • Viva Focus</span>
+        </div>
+      </div>
+
+      <div class="subject-row">
+        <div class="subject-left">
+          <span class="subject-code">CS-303</span>
+          <h3>Software Engineering</h3>
+          <p>
+            SDLC models, planning, testing,
+            and quality assurance concepts.
+          </p>
+        </div>
+        <div class="subject-right">
+          <span>Models • Case Studies</span>
+        </div>
+      </div>
+
+      <div class="subject-row">
+        <div class="subject-left">
+          <span class="subject-code">CS-304</span>
+          <h3>Computer Networks</h3>
+          <p>
+            OSI & TCP/IP models, protocols,
+            and data communication basics.
+          </p>
+        </div>
+        <div class="subject-right">
+          <span>Layers • Diagrams • MCQs</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+<!-- ================= NOTES SECTION ================= -->
+<section class="notes-section">
+  <div class="notes-container">
+
+    <!-- Header -->
+    <div class="notes-header">
+      <span class="notes-badge">Read & Prepare</span>
+      <h2>Exam-Oriented Notes Preview</h2>
+      <p>
+        Structured unit-wise notes designed for
+        diploma & polytechnic IT / CS students.
+      </p>
+    </div>
+
+    <!-- Notes Grid -->
+    <div class="notes-grid">
+
+      <div class="note-tile">
+        <div class="note-top">
+          <span class="note-tag">Operating System</span>
+          <span class="note-type">Theory</span>
+        </div>
+        <h3>CPU Scheduling Algorithms</h3>
+        <p>
+          FCFS, SJF, Priority and Round Robin
+          explained with diagrams and exam answers.
+        </p>
+        <div class="note-footer">
+          <span>📘 Read Mode</span>
+          <span>Unit 2</span>
+        </div>
+      </div>
+
+      <div class="note-tile">
+        <div class="note-top">
+          <span class="note-tag">DBMS</span>
+          <span class="note-type">Concept</span>
+        </div>
+        <h3>Normalization (1NF – 3NF)</h3>
+        <p>
+          Clear step-by-step normalization with
+          tables and easy explanations.
+        </p>
+        <div class="note-footer">
+          <span>📘 Read Mode</span>
+          <span>Unit 3</span>
+        </div>
+      </div>
+
+      <div class="note-tile">
+        <div class="note-top">
+          <span class="note-tag">CN</span>
+          <span class="note-type">Comparison</span>
+        </div>
+        <h3>TCP vs UDP</h3>
+        <p>
+          Differences, features and real-world
+          examples asked in exams.
+        </p>
+        <div class="note-footer">
+          <span>📘 Read Mode</span>
+          <span>Unit 1</span>
+        </div>
+      </div>
+
+      <div class="note-tile">
+        <div class="note-top">
+          <span class="note-tag">SE</span>
+          <span class="note-type">Models</span>
+        </div>
+        <h3>SDLC Phases</h3>
+        <p>
+          Waterfall, Spiral and Agile models
+          explained for 5-mark answers.
+        </p>
+        <div class="note-footer">
+          <span>📘 Read Mode</span>
+          <span>Unit 1</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+<!-- ================= BENEFITS (CONVINCE) ================= -->
+<section class="benefits-next">
+  <div class="benefits-wrap">
+
+    <div class="benefits-left">
+      <h2>Why EduDiplomaHub Works</h2>
+      <p>
+        This platform is built especially for
+        <b>IT & CS Diploma students</b> who want
+        clarity, consistency, and confidence
+        before exams.
+      </p>
+    </div>
+
+    <div class="benefits-right">
+
+      <div class="benefit-line"></div>
+
+      <div class="benefit-item">
+        <div class="benefit-dot"></div>
+        <div class="benefit-box">
+          <h4>Exam-Oriented Structure</h4>
+          <p>
+            Notes are written strictly as per
+            diploma exam pattern — no extra noise.
+          </p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-dot"></div>
+        <div class="benefit-box">
+          <h4>Unit-Wise Flow</h4>
+          <p>
+            Subjects → Units → Notes flow helps
+            fast revision and better memory.
+          </p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-dot"></div>
+        <div class="benefit-box">
+          <h4>Distraction-Free Reading</h4>
+          <p>
+            Clean layout, focused view mode,
+            no ads, no popups.
+          </p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-dot"></div>
+        <div class="benefit-box">
+          <h4>Secure Read-Only Access</h4>
+          <p>
+            Notes open inside platform with
+            protected viewing.
+          </p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-dot"></div>
+        <div class="benefit-box">
+          <h4>Confidence Before Exams</h4>
+          <p>
+            When preparation is structured,
+            confidence automatically increases.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+<!-- ================= FOOTER (2026) ================= -->
+<footer class="footer-elite">
+
+  <div class="footer-wrap">
+
+    <!-- Brand -->
+    <div class="footer-brand">
+      <div class="footer-logo">ED</div>
+      <h3>EduDiplomaHub</h3>
+      <p>
+        A focused learning platform for
+        IT & CS Diploma students, providing
+        structured, exam-oriented notes with
+        a distraction-free reading experience.
+      </p>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/subjects">Subjects</a></li>
+        <li><a href="/notes">Notes</a></li>
+        <li><a href="/help">Help</a></li>
+      </ul>
+    </div>
+
+    <!-- Support -->
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="/about">About</a></li>
+        <li><a href="/privacy">Privacy Policy</a></li>
+        <li><a href="/terms">Terms & Conditions</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- Bottom -->
+  <div class="footer-bottom">
+    <p>
+      © 2026 EduDiplomaHub • Built for Diploma Students • All Rights Reserved
+    </p>
+  </div>
+
+</footer>
+
+
+
+
+<script>
+const nav = document.querySelector(".pro-navbar");
+const toggle = document.getElementById("proToggle");
+const links = document.getElementById("proLinks");
+
+window.addEventListener("scroll",()=>{
+  nav.classList.toggle("scrolled",window.scrollY>30);
+});
+toggle.addEventListener("click",()=>{
+  links.classList.toggle("open");
+});
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* ENTRY ANIMATION */
+  const left = document.querySelector(".hero-left");
+  const right = document.querySelector(".hero-right");
+
+  setTimeout(()=>{
+    left.style.transition="all .8s ease";
+    left.style.opacity="1";
+    left.style.transform="translateY(0)";
+  },150);
+
+  setTimeout(()=>{
+    right.style.transition="all .8s ease";
+    right.style.opacity="1";
+    right.style.transform="translateY(0)";
+  },350);
+
+  /* TYPING EFFECT */
+  const el = document.getElementById("heroTyped");
+  const texts = [
+    "Exam-Oriented Content for Diploma Students",
+    "Unit-Wise Notes for Easy Revision",
+    "Focused, Distraction-Free Reading"
+  ];
+
+  let i=0,j=0,del=false;
+
+  function type(){
+    const t=texts[i];
+    if(!del){
+      el.textContent=t.slice(0,++j);
+      if(j===t.length) setTimeout(()=>del=true,1600);
+    }else{
+      el.textContent=t.slice(0,--j);
+      if(j===0){del=false;i=(i+1)%texts.length;}
+    }
+    setTimeout(type,del?45:80);
+  }
+  type();
+
+});
+document.addEventListener("DOMContentLoaded", () => {
+  const trustCards = document.querySelectorAll(".trust-card");
+
+  const revealTrust = () => {
+    const trigger = window.innerHeight * 0.9;
+
+    trustCards.forEach(card => {
+      const top = card.getBoundingClientRect().top;
+      if (top < trigger) {
+        card.style.opacity = "1";
+        card.style.transform = "translateY(0)";
+      }
+    });
+  };
+
+  window.addEventListener("scroll", revealTrust, { passive: true });
+  revealTrust();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const rows = document.querySelectorAll(".subject-row");
+
+  const revealSubjects = () => {
+    const trigger = window.innerHeight * 0.9;
+
+    rows.forEach(row => {
+      const top = row.getBoundingClientRect().top;
+      if (top < trigger) {
+        row.style.opacity = "1";
+        row.style.transform = "translateY(0)";
+      }
+    });
+  };
+
+  window.addEventListener("scroll", revealSubjects, { passive: true });
+  revealSubjects();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const notes = document.querySelectorAll(".note-tile");
+
+  const revealNotes = () => {
+    const trigger = window.innerHeight * 0.9;
+    notes.forEach(note => {
+      const top = note.getBoundingClientRect().top;
+      if (top < trigger) {
+        note.style.opacity = "1";
+        note.style.transform = "translateY(0)";
+      }
+    });
+  };
+
+  notes.forEach(note => {
+    note.style.opacity = "0";
+    note.style.transform = "translateY(24px)";
+    note.style.transition = "all .6s ease";
+  });
+
+  window.addEventListener("scroll", revealNotes, { passive: true });
+  revealNotes();
+});
+document.addEventListener("DOMContentLoaded",()=>{
+  const items=document.querySelectorAll(".benefit-item");
+
+  const reveal=()=>{
+    const trigger=window.innerHeight*0.9;
+    items.forEach(item=>{
+      const top=item.getBoundingClientRect().top;
+      if(top<trigger){
+        item.style.opacity="1";
+        item.style.transform="translateY(0)";
+      }
+    });
+  };
+
+  window.addEventListener("scroll",reveal,{passive:true});
+  reveal();
+});
+
+document.addEventListener("DOMContentLoaded",()=>{
+  const footer=document.querySelector(".footer-elite");
+  const items=footer.querySelectorAll(".footer-brand,.footer-col,.footer-bottom");
+
+  const reveal=()=>{
+    const trigger=window.innerHeight*0.9;
+    items.forEach(item=>{
+      const top=item.getBoundingClientRect().top;
+      if(top<trigger){
+        item.style.opacity="1";
+        item.style.transform="translateY(0)";
+      }
+    });
+  };
+
+  window.addEventListener("scroll",reveal,{passive:true});
+  reveal();
+});
+
+
+
+
+
+
+</script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+

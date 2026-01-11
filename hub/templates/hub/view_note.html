@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ note.title }}</title>
+
+  <style>
+    body{
+      margin:0;
+      background:#0f172a;
+      font-family:Arial, sans-serif;
+      overflow:hidden;
+      user-select:none;
+    }
+
+    header{
+      height:52px;
+      background:#020617;
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:bold;
+      font-size:14px;
+    }
+
+    .viewer{
+      position:relative;
+      width:100%;
+      height:calc(100vh - 52px);
+      background:#000;
+      overflow:hidden;
+    }
+
+    iframe{
+      width:100%;
+      height:100%;
+      border:none;
+    }
+
+    /* 🔴 MOVING WATERMARK */
+    .watermark{
+      position:absolute;
+      top:40%;
+      left:-40%;
+      font-size:38px;
+      font-weight:800;
+      color:rgba(255,0,0,0.18); /* light red */
+      pointer-events:none;
+      white-space:nowrap;
+      z-index:10;
+      animation: moveWatermark 18s linear infinite;
+    }
+
+    @keyframes moveWatermark{
+      0%{
+        transform:translateX(0);
+      }
+      100%{
+        transform:translateX(180%);
+      }
+    }
+  </style>
+</head>
+
+<body
+  oncontextmenu="return false"
+  onselectstart="return false"
+  ondragstart="return false"
+>
+
+<header>
+  📘 {{ note.title }} — Secure View
+</header>
+
+<div class="viewer">
+
+  <!-- 🔴 MOVING WATERMARK -->
+  <div class="watermark">
+    {{ request.user.username }} • EduDiplomaHub
+  </div>
+
+  <!-- 🔒 PDF -->
+  <iframe
+    src="{{ note.file.url }}#toolbar=0&navpanes=0&scrollbar=0"
+  ></iframe>
+
+</div>
+
+<script>
+/* 🚫 Disable shortcuts */
+document.addEventListener("keydown", function(e){
+  if (
+    e.ctrlKey &&
+    ["p","s","u","c"].includes(e.key.toLowerCase())
+  ){
+    e.preventDefault();
+    alert("This action is disabled");
+  }
+
+  if (e.key === "PrintScreen") {
+    e.preventDefault();
+    alert("Screenshot disabled");
+  }
+});
+</script>
+
+</body>
+</html>

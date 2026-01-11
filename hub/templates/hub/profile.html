@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Dashboard | EduDiplomaHub</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ================= GLOBAL ================= */
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:linear-gradient(180deg,#f5f7fb,#eef2ff);
+  font-family:'Inter',sans-serif;
+  color:#1f2937;
+}
+
+/* ================= CONTAINER ================= */
+.container{
+  max-width:1150px;
+  margin:50px auto;
+  padding:0 20px;
+}
+
+/* ================= HEADER ================= */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  flex-wrap:wrap;
+  margin-bottom:40px;
+}
+
+.header h1{
+  margin:0;
+  font-size:2rem;
+  font-weight:800;
+}
+
+.actions{
+  display:flex;
+  gap:14px;
+}
+
+/* ================= BUTTONS ================= */
+.btn{
+  padding:12px 20px;
+  border-radius:14px;
+  font-weight:800;
+  border:none;
+  cursor:pointer;
+  background:#0d6efd;
+  color:#fff;
+  transition:.3s ease;
+}
+.btn:hover{
+  background:#084298;
+  transform:translateY(-2px);
+}
+
+.btn-outline{
+  background:#fff;
+  color:#0d6efd;
+  border:2px solid #0d6efd;
+}
+.btn-outline:hover{
+  background:#0d6efd;
+  color:#fff;
+}
+
+/* ================= STATS ================= */
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:24px;
+  margin-bottom:40px;
+}
+
+.stat-card{
+  padding:28px;
+  border-radius:20px;
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 20px 50px rgba(0,0,0,.18);
+  transition:.4s ease;
+
+  opacity:0;
+  transform:translateY(30px);
+}
+.stat-card:hover{
+  transform:translateY(-8px);
+}
+
+.stat-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,rgba(255,255,255,.25),transparent);
+}
+
+.stat-card.coins{
+  background:linear-gradient(135deg,#0d6efd,#084298);
+}
+.stat-card.mobile{
+  background:linear-gradient(135deg,#16a34a,#15803d);
+}
+
+.stat-card h2{
+  margin:0;
+  font-size:2.6rem;
+  font-weight:900;
+}
+.stat-card p{
+  margin-top:6px;
+  font-size:.95rem;
+  opacity:.9;
+}
+
+/* ================= CARD ================= */
+.card{
+  background:#ffffff;
+  border-radius:20px;
+  padding:28px;
+  box-shadow:0 18px 50px rgba(0,0,0,.08);
+  margin-bottom:32px;
+  transition:.4s ease;
+
+  opacity:0;
+  transform:translateY(40px);
+}
+.card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 26px 70px rgba(13,110,253,.2);
+}
+
+.card h3{
+  margin-top:0;
+  margin-bottom:18px;
+  font-size:1.25rem;
+  font-weight:800;
+  color:#0d6efd;
+}
+
+/* ================= PROFILE DATA ================= */
+.label{
+  font-size:.85rem;
+  color:#6b7280;
+  margin-bottom:4px;
+}
+.value{
+  font-weight:700;
+  margin-bottom:14px;
+}
+
+/* ================= REFERRAL ================= */
+.ref-box{
+  background:#f1f5f9;
+  padding:14px;
+  border-radius:14px;
+  font-size:.9rem;
+  word-break:break-all;
+  margin-bottom:12px;
+}
+
+/* ================= LINK ================= */
+.link{
+  font-weight:800;
+  color:#0d6efd;
+  text-decoration:none;
+}
+.link:hover{text-decoration:underline}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:600px){
+  .header h1{font-size:1.7rem}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>👋 Welcome, {{ request.user.first_name|default:"Student" }}</h1>
+
+    <div class="actions">
+      <a href="{% url 'edit_profile' %}" class="btn btn-outline">
+        ✏ Edit Profile
+      </a>
+
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button class="btn" type="submit">Logout</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-grid">
+    <div class="stat-card coins">
+      <h2>{{ profile.coins }}</h2>
+      <p>Available Coins</p>
+    </div>
+
+    <div class="stat-card mobile">
+      <h2>{{ profile.mobile }}</h2>
+      <p>Registered Mobile</p>
+    </div>
+  </div>
+
+  <!-- PROFILE INFO -->
+  <div class="card">
+    <h3>👤 Student Profile</h3>
+
+    <div class="label">Name</div>
+    <div class="value">{{ request.user.first_name|default:"—" }}</div>
+
+    <div class="label">Email</div>
+    <div class="value">{{ request.user.email|default:"—" }}</div>
+
+    <div class="label">College</div>
+    <div class="value">{{ profile.college_name|default:"—" }}</div>
+
+    <div class="label">Branch</div>
+    <div class="value">{{ profile.branch|default:"—" }}</div>
+  </div>
+
+  <!-- REFERRAL -->
+  <div class="card">
+    <h3>🎁 Referral Program</h3>
+
+    <div class="label">Referral Code</div>
+    <div class="ref-box">{{ profile.referral_code }}</div>
+
+    <div class="label">Referral Link</div>
+    <div class="ref-box" id="refLink">
+      {{ request.scheme }}://{{ request.get_host }}/login/?ref={{ profile.referral_code }}
+    </div>
+
+    <button class="btn" onclick="copyRef()">Copy Referral Link</button>
+  </div>
+
+  <!-- MY NOTES -->
+  <div class="card">
+    <h3>📚 My Learning</h3>
+    <a href="{% url 'my_notes' %}" class="link">
+      → View My Purchased Notes
+    </a>
+  </div>
+
+</div>
+
+<script>
+/* copy referral */
+function copyRef(){
+  navigator.clipboard.writeText(
+    document.getElementById("refLink").innerText
+  );
+  alert("Referral link copied!");
+}
+
+/* reveal animation */
+document.addEventListener("DOMContentLoaded",()=>{
+  const items=[...document.querySelectorAll(".card,.stat-card")];
+  function reveal(){
+    const trigger=window.innerHeight*0.9;
+    items.forEach(i=>{
+      if(i.getBoundingClientRect().top<trigger){
+        i.style.opacity="1";
+        i.style.transform="translateY(0)";
+      }
+    });
+  }
+  window.addEventListener("scroll",reveal,{passive:true});
+  reveal();
+});
+</script>
+
+</body>
+</html>

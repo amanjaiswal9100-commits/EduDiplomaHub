@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login | EduDiplomaHub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,#e0ecff,#f5f7fb);
+      font-family:Inter, Arial, sans-serif;
+    }
+
+    .card{
+      width:100%;
+      max-width:420px;
+      background:#fff;
+      padding:32px 26px;
+      border-radius:18px;
+      box-shadow:0 20px 45px rgba(0,0,0,.12);
+    }
+
+    h2{
+      text-align:center;
+      color:#0d6efd;
+      margin-bottom:20px;
+    }
+
+    label{
+      font-size:.85rem;
+      font-weight:700;
+      margin-bottom:6px;
+      display:block;
+    }
+
+    input{
+      width:100%;
+      padding:12px;
+      border-radius:10px;
+      border:1px solid #d1d5db;
+      margin-bottom:14px;
+    }
+
+    button{
+      width:100%;
+      padding:14px;
+      background:#0d6efd;
+      color:#fff;
+      border:none;
+      border-radius:12px;
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    .link{
+      display:block;
+      text-align:center;
+      margin-top:14px;
+      font-size:.85rem;
+    }
+
+    .error{
+      background:#fee2e2;
+      color:#991b1b;
+      padding:10px;
+      border-radius:8px;
+      margin-bottom:14px;
+      text-align:center;
+      font-size:.85rem;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2>Login</h2>
+
+  {% if error %}
+    <div class="error">{{ error }}</div>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+
+    <label>Mobile Number</label>
+    <input type="tel" name="mobile" maxlength="10" required>
+
+    <label>Password</label>
+    <input type="password" name="password" required>
+
+    <button type="submit">Login</button>
+  </form>
+
+  <a href="{% url 'signup' %}">🆕 New user? Sign up</a>
+<a href="{% url 'forgot_password' %}">🔁 Forgot password</a>
+
+</div>
+
+</body>
+</html>

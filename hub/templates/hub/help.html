@@ -1,0 +1,218 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Help & FAQ | EduDiplomaHub</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ================= GLOBAL ================= */
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:'Inter',sans-serif;
+  background:linear-gradient(180deg,#f5f7fb,#eef2ff);
+  color:#1f2937;
+}
+
+/* ================= HERO HEADER ================= */
+.header{
+  padding:90px 20px 70px;
+  text-align:center;
+  background:linear-gradient(180deg,#eef4ff,#f5f7fb);
+}
+.header h1{
+  font-size:2.5rem;
+  font-weight:800;
+  color:#0d6efd;
+  margin-bottom:10px;
+}
+.header p{
+  max-width:520px;
+  margin:auto;
+  font-size:1rem;
+  color:#4b5563;
+}
+
+/* ================= CONTAINER ================= */
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:60px 20px 90px;
+}
+
+/* ================= FAQ CARD ================= */
+.faq{
+  background:#ffffff;
+  border-radius:18px;
+  margin-bottom:22px;
+  box-shadow:0 14px 36px rgba(0,0,0,.08);
+  overflow:hidden;
+  transition:.4s ease;
+
+  opacity:0;
+  transform:translateY(30px);
+}
+.faq:hover{
+  box-shadow:0 22px 60px rgba(13,110,253,.25);
+}
+
+/* Question */
+.faq-header{
+  padding:22px 24px;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.faq-header h3{
+  margin:0;
+  font-size:1.05rem;
+  font-weight:700;
+  color:#0d6efd;
+}
+
+/* Icon */
+.faq-icon{
+  font-size:1.3rem;
+  color:#0d6efd;
+  transition:.3s ease;
+}
+
+/* Answer */
+.faq-body{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .4s ease, padding .3s ease;
+  padding:0 24px;
+}
+.faq-body p{
+  font-size:.95rem;
+  color:#4b5563;
+  line-height:1.7;
+  margin:0;
+}
+
+/* Active */
+.faq.active .faq-body{
+  max-height:260px;
+  padding:0 24px 22px;
+}
+.faq.active .faq-icon{
+  transform:rotate(180deg);
+}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:600px){
+  .header h1{font-size:2.1rem}
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<section class="header">
+  <h1>Help & FAQ</h1>
+  <p>Common questions asked by Diploma & IT students</p>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="container">
+
+  <div class="faq">
+    <div class="faq-header">
+      <h3>📌 How do I create an account?</h3>
+      <span class="faq-icon">⌄</span>
+    </div>
+    <div class="faq-body">
+      <p>
+        Enter your mobile number, verify OTP once, complete your details
+        and set a password. After signup, OTP will not be required again.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq">
+    <div class="faq-header">
+      <h3>🔐 I forgot my password. What should I do?</h3>
+      <span class="faq-icon">⌄</span>
+    </div>
+    <div class="faq-body">
+      <p>
+        Use the “Forgot Password” option. OTP will be sent to your registered
+        mobile number to reset your password securely.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq">
+    <div class="faq-header">
+      <h3>💳 How do payments work?</h3>
+      <span class="faq-icon">⌄</span>
+    </div>
+    <div class="faq-body">
+      <p>
+        Payments are processed securely via Razorpay. Once payment is successful,
+        notes are unlocked instantly.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq">
+    <div class="faq-header">
+      <h3>📄 Can I download notes?</h3>
+      <span class="faq-icon">⌄</span>
+    </div>
+    <div class="faq-body">
+      <p>
+        No. Notes are available only in secure view mode to protect content.
+        Downloading, printing or sharing is not allowed.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq">
+    <div class="faq-header">
+      <h3>📱 Can I login on multiple devices?</h3>
+      <span class="faq-icon">⌄</span>
+    </div>
+    <div class="faq-body">
+      <p>
+        No. One account is allowed on one device only for security reasons.
+      </p>
+    </div>
+  </div>
+
+</section>
+
+<script>
+/* accordion */
+document.querySelectorAll(".faq-header").forEach(header=>{
+  header.addEventListener("click",()=>{
+    header.parentElement.classList.toggle("active");
+  });
+});
+
+/* reveal animation */
+document.addEventListener("DOMContentLoaded",()=>{
+  const faqs=[...document.querySelectorAll(".faq")];
+  function reveal(){
+    const trigger=window.innerHeight*0.9;
+    faqs.forEach(f=>{
+      if(f.getBoundingClientRect().top<trigger){
+        f.style.opacity="1";
+        f.style.transform="translateY(0)";
+      }
+    });
+  }
+  window.addEventListener("scroll",reveal,{passive:true});
+  reveal();
+});
+</script>
+
+</body>
+</html>

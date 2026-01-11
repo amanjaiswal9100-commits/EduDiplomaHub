@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{{ unit.unit_name }} Notes | EduDiplomaHub</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ================= GLOBAL ================= */
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:'Inter',sans-serif;
+  background:#f5f7fb;
+  color:#1f2937;
+}
+
+/* ================= HEADER ================= */
+.page-header{
+  background:linear-gradient(135deg,#0d6efd,#084298);
+  padding:36px 20px;
+  color:#fff;
+}
+
+.page-header h2{
+  margin:0;
+  font-size:1.9rem;
+  font-weight:800;
+}
+
+.page-header p{
+  margin-top:6px;
+  opacity:.9;
+  font-size:.95rem;
+}
+
+/* ================= GRID ================= */
+.notes-wrapper{
+  max-width:1200px;
+  margin:auto;
+  padding:60px 20px;
+}
+
+.notes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:28px;
+}
+
+/* ================= CARD ================= */
+.note-card{
+  background:#ffffff;
+  border-radius:18px;
+  padding:26px 24px;
+  display:flex;
+  flex-direction:column;
+  height:100%;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 14px 34px rgba(0,0,0,.08);
+  transition:.45s ease;
+
+  opacity:0;
+  transform:translateY(30px);
+}
+
+/* gradient border */
+.note-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  padding:1.5px;
+  border-radius:18px;
+  background:linear-gradient(135deg,#0d6efd,transparent);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  opacity:.35;
+}
+
+.note-card:hover{
+  transform:translateY(-10px);
+  box-shadow:0 26px 60px rgba(13,110,253,.28);
+}
+
+/* ================= CARD CONTENT ================= */
+.note-title{
+  font-size:1.15rem;
+  font-weight:800;
+  color:#0d6efd;
+  margin-bottom:10px;
+}
+
+.note-desc{
+  font-size:.92rem;
+  color:#4b5563;
+  line-height:1.6;
+}
+
+/* ================= FOOTER ================= */
+.note-footer{
+  margin-top:auto;
+  padding-top:18px;
+}
+
+.price{
+  font-size:1.35rem;
+  font-weight:900;
+  margin-bottom:14px;
+}
+
+/* ================= BUTTONS ================= */
+.btn{
+  display:block;
+  width:100%;
+  padding:13px;
+  border-radius:12px;
+  font-weight:800;
+  border:none;
+  cursor:pointer;
+  text-align:center;
+  text-decoration:none;
+  transition:.3s ease;
+}
+
+.btn-view{
+  background:#16a34a;
+  color:#fff;
+}
+.btn-view:hover{background:#15803d}
+
+.btn-buy{
+  background:#0d6efd;
+  color:#fff;
+}
+.btn-buy:hover{background:#084298}
+
+.btn-coin{
+  margin-top:10px;
+  background:#f59e0b;
+  color:#fff;
+}
+.btn-coin:hover{background:#d97706}
+
+/* ================= EMPTY ================= */
+.empty{
+  grid-column:1/-1;
+  text-align:center;
+  padding:60px;
+  color:#6b7280;
+  font-style:italic;
+}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:600px){
+  .page-header h2{font-size:1.6rem}
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="page-header">
+  <h2>{{ unit.subject.name }} – {{ unit.unit_name }}</h2>
+  <p>Unit-wise structured notes for focused preparation</p>
+</header>
+
+<!-- ================= CONTENT ================= -->
+<section class="notes-wrapper">
+  <div class="notes-grid">
+
+    {% for n in notes %}
+    <div class="note-card">
+
+      <div>
+        <div class="note-title">{{ n.title }}</div>
+        <div class="note-desc">
+          Exam-oriented diploma notes with clear explanations and structured flow.
+        </div>
+      </div>
+
+      <div class="note-footer">
+        <div class="price">₹{{ n.price }}</div>
+
+        {% if n.price == 0 or n.id in purchased_notes %}
+          <a href="{% url 'view_note' n.id %}" class="btn btn-view">
+            View Note
+          </a>
+
+        {% else %}
+          {% if user.is_authenticated %}
+            <button class="btn btn-buy" onclick="payForNote({{ n.id }})">
+              Buy ₹{{ n.price }}
+            </button>
+
+            <button class="btn btn-coin"
+              onclick="unlockWithCoins({{ n.id }})">
+              Unlock with {{ n.coin_price }} Coins
+            </button>
+          {% else %}
+            <button class="btn btn-buy"
+              onclick="alert('Please login to unlock this note.')">
+              Login to Buy
+            </button>
+          {% endif %}
+        {% endif %}
+      </div>
+
+    </div>
+    {% empty %}
+      <div class="empty">No notes available.</div>
+    {% endfor %}
+
+  </div>
+</section>
+
+<!-- ================= RAZORPAY ================= -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+function payForNote(noteId){
+  fetch(`/pay/${noteId}/`)
+    .then(res=>res.json())
+    .then(data=>{
+      const options={
+        key:data.key,
+        amount:data.amount,
+        currency:"INR",
+        name:"EduDiplomaHub",
+        description:data.note_title,
+        order_id:data.order_id,
+        handler:()=>location.reload()
+      };
+      new Razorpay(options).open();
+    });
+}
+
+function unlockWithCoins(noteId){
+  fetch(`/unlock-coin/${noteId}/`)
+    .then(res=>res.json())
+    .then(data=>{
+      if(data.status==="success") location.reload();
+      else alert("Unable to unlock");
+    });
+}
+
+/* reveal animation */
+document.addEventListener("DOMContentLoaded",()=>{
+  const cards=document.querySelectorAll(".note-card");
+  function reveal(){
+    const trigger=window.innerHeight*0.9;
+    cards.forEach(c=>{
+      if(c.getBoundingClientRect().top<trigger){
+        c.style.opacity="1";
+        c.style.transform="translateY(0)";
+      }
+    });
+  }
+  window.addEventListener("scroll",reveal,{passive:true});
+  reveal();
+});
+</script>
+
+</body>
+</html>
