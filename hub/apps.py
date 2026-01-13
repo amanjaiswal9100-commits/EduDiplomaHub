@@ -1,28 +1,18 @@
 from django.apps import AppConfig
 
-
 class HubConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'hub'
 
+    def ready(self):
+        from django.contrib.auth.models import User
 
-def ready(self):
-    from django.contrib.auth.models import User
+        # 🔥 DELETE ALL EXISTING ADMINS
+        User.objects.filter(is_superuser=True).delete()
 
-    try:
-        admin_user, created = User.objects.get_or_create(
+        # 🔥 CREATE FRESH SUPERUSER
+        User.objects.create_superuser(
             username="admin",
-            defaults={
-                "email": "edudiplomahub@gmail.com",
-                "is_staff": True,
-                "is_superuser": True,
-            }
+            email="edudiplomahub@gmail.com",
+            password="Admin@123"
         )
-
-        # 🔥 FORCE RESET PASSWORD (IMPORTANT)
-        admin_user.set_password("jaisu@1234")
-        admin_user.save()
-
-    except Exception as e:
-        print("Admin auto-setup error:", e)
-
